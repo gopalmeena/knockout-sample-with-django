@@ -405,7 +405,7 @@ var clientViewModel = function(){
 	})
 
 	self.addProductToggle = function(){
-		self.addChangeToggle();self.featureProductArea(undefined);
+		self.addChangeToggle();self.featureProductArea(undefined);self.productAreaName(undefined);
 		self.SaveSuccess(false);self.SaveSuccessMsg('');
 	}
 	self.updateProductToggle = function(){
