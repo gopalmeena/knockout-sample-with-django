@@ -266,7 +266,7 @@
 								</div>
 								<select data-bind="options:clientList,optionsText:'name',value:featureClient,optionsCaption:'Choose Client...'" class="form-control"></select>
 							</div>
-							<div>
+							<div data-bind="visible:updateButton()">
 								<p data-bind="validationMessage:featureClient" class="text-danger"></p>
 							</div>
 							<br/>
@@ -322,7 +322,7 @@
 								</div>
 								<select data-bind="options:productAreaList,optionsText:'name',value:featureProductArea,optionsCaption:'Choose Product Area...'" class="form-control"></select>
 							</div>
-							<div>
+							<div data-bind="visible:updateButton()">
 								<p data-bind="validationMessage:featureProductArea" class="text-danger"></p>
 							</div>
 							<br/>
