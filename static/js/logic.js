@@ -118,6 +118,7 @@ var clientViewModel = function(){
 
 	/*Initially load all client,product are and feature */
 	self.updateClientList = function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.clientList.removeAll();
 		/* Store client information in starting. It will help in searching client name while adding client */
 		$.ajax({
@@ -132,6 +133,7 @@ var clientViewModel = function(){
 		});
 	};
 	self.updateProductList = function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.productAreaList.removeAll();
 		/* Store Product area information in starting*/
 		$.ajax({
@@ -146,6 +148,7 @@ var clientViewModel = function(){
 		});
 	};
 	self.updateFeatureList = function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.featureList.removeAll();
 		/* Store Product area information in starting*/
 		$.ajax({
@@ -175,12 +178,15 @@ var clientViewModel = function(){
 	});
 
 	self.addClientToggle = function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.addChangeToggle();self.clientName(undefined);
 	}
 	self.updateClientToggle = function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.updateChangeToggle();self.clientName(undefined);self.featureClient(undefined);
 	}
 	self.deleteClientToggle = function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.deleteChangeToggle();self.featureClient(undefined)
 	}
 	self.saveClient = function(){
@@ -197,6 +203,7 @@ var clientViewModel = function(){
 
 	/* Refresh data in client modal */
 	self.refreshClient = function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.SaveSuccess(false);self.SaveSuccessMsg('');self.clientName(undefined);
 	};
 
@@ -263,14 +270,17 @@ var clientViewModel = function(){
 
 
 	self.addFeatureToggle = function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.addChangeToggle();self.featureTitle(null);self.featureDescription(null);self.featureClient(null);
 		self.featureProductArea(null);self.featureTargetDate(null);self.clientPriority(null);
 	}
 	self.updateFeatureToggle = function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.updateChangeToggle();self.featureTitle(null);self.featureDescription(null);self.featureClient(null);
 		self.featureProductArea(null);self.featureTargetDate(null);self.clientPriority(null);
 	}
 	self.deleteFeatureToggle = function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.deleteChangeToggle();
 	}
 
@@ -305,12 +315,14 @@ var clientViewModel = function(){
 	};
 
 	self.refreshFeature = function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.featureSaveSuccess(false);
 		self.featureSaveSuccessMsg('')
 		self.featureTitle(undefined),self.featureDescription(undefined),self.featureClient(undefined),self.featureTargetDate(undefined),self.featureProductArea(undefined);
 	}
 
 	self.updateFeature = function(val){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		$('#featureModal').modal('show');
 		self.featureId(val.id());
 		self.updateFeatureToggle();
@@ -348,6 +360,7 @@ var clientViewModel = function(){
 
 
 	self.deleteFeature = function(val){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.featureId(val.id());
 		$('#featureModal').modal('show');
 		self.deleteFeatureToggle();
@@ -393,13 +406,15 @@ var clientViewModel = function(){
 
 	self.addProductToggle = function(){
 		self.addChangeToggle();self.featureProductArea(undefined);
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 	}
 	self.updateProductToggle = function(){
-		console.log(self.productAreaList());
 		self.updateChangeToggle();self.featureProductArea(undefined);self.productAreaName(undefined);
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 	}
 	self.deleteProductToggle = function(){
-		self.deleteChangeToggle();self.featureProductArea(undefined);self.productAreaName(undefined)
+		self.deleteChangeToggle();self.featureProductArea(undefined);self.productAreaName(undefined);
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
 	}
 	self.saveProductArea = function(){
 		var data = {"name":self.productAreaName()};
