@@ -404,8 +404,10 @@ var clientViewModel = function(){
 	self.saveProductArea = function(){
 		var data = {"name":self.productAreaName()};
 		$.post(productURL,data,function(response,status){
-			self.SaveSuccess(true);
-			self.SaveSuccessMsg('Data Saved successfully.');
+			self.SaveSuccess(true);self.SaveSuccessMsg('Product area Saved successfully.');
+			setTimeout(function(){
+				$('#productModal').modal('hide');self.updateProductList();
+			},300);
 		}).fail(function(response,status){
 			console.log(response+' '+status)
 			self.SaveSuccess(true);
