@@ -1,3 +1,6 @@
+var mainURL = window.location.protocol+"//"window.location.host+"feature/";
+var clientURL = mainURL+"client/",productURL = mainURL+"product/",featureURL = mainURL+"feature/"
+
 ko.validation.init({
 	registerExtenders: true,
 	messagesOnModified: true,
@@ -118,7 +121,7 @@ var clientViewModel = function(){
 		self.clientList.removeAll();
 		/* Store client information in starting. It will help in searching client name while adding client */
 		$.ajax({
-			url:"http://localhost:8000/feature/client/",
+			url:clientURL,
 			type:'get',
 			async:false,
 			success: function(data){
@@ -132,7 +135,7 @@ var clientViewModel = function(){
 		self.productAreaList.removeAll();
 		/* Store Product area information in starting*/
 		$.ajax({
-			url:'http://localhost:8000/feature/products/',
+			url:productURL,
 			async:false,
 			type:'get',
 			success:function(data){
@@ -146,7 +149,7 @@ var clientViewModel = function(){
 		self.featureList.removeAll();
 		/* Store Product area information in starting*/
 		$.ajax({
-			url:'http://localhost:8000/feature/feature/',
+			url:featureURL,
 			type:'get',
 			success: function(data){
 				for(var i=0;i<data.length;i++){
@@ -182,7 +185,7 @@ var clientViewModel = function(){
 	}
 	self.saveClient = function(){
 		data = {"name":self.clientName()};
-		$.post("http://localhost:8000/feature/client/",data,function(response,status){
+		$.post(clientURL,data,function(response,status){
 			self.SaveSuccess(true);self.SaveSuccessMsg('Data Saved successfully.');
 			setTimeout(function(){
 				$('#clientModal').modal('hide');self.updateClientList();
@@ -199,7 +202,7 @@ var clientViewModel = function(){
 
 	self.deleteClient = function(val){
 		if(self.featureClient()){
-			var URL = "http://localhost:8000/feature/client/"+self.featureClient().id();
+			var URL = clientURL+self.featureClient().id();
 			console.log(URL);
 			$.ajax({
 				url:URL,type:'DELETE',
@@ -224,7 +227,7 @@ var clientViewModel = function(){
 
 	self.updateClient = function(){
 		if(self.featureClient()&&self.clientName()){
-			var data = {"name":self.clientName()};var URL = "http://localhost:8000/feature/client/"+self.featureClient().id()+'/';
+			var data = {"name":self.clientName()};var URL = clientURL+self.featureClient().id()+'/';
 			data = JSON.stringify(data);
 			var headers = {'Content-type':'application/json'};
 			$.ajax({
@@ -280,7 +283,7 @@ var clientViewModel = function(){
 		var headers = {'Content-type':'application/json'};
 		console.log(data);
 		$.ajax({
-			url:"http://localhost:8000/feature/feature/",type:'post',headers:headers,data:data,
+			url:featureURL,type:'post',headers:headers,data:data,
 			success: function(){
 				self.SaveSuccess(true);self.SaveSuccessMsg('Data Saved successfully.')
 			},
@@ -323,7 +326,7 @@ var clientViewModel = function(){
 		data = JSON.stringify(data);
 		var headers = {'Content-type':'application/json'};
 		console.log(data);
-		var url = "http://localhost:8000/feature/feature/"+self.featureId()+"/";
+		var url = featureURL+self.featureId()+"/";
 		$.ajax({
 			url:url,type:'put',headers:headers,data:data,
 			success: function(response){
@@ -354,7 +357,7 @@ var clientViewModel = function(){
 
 	self.deleteFeatureItem = function(val){
 		alert('in')
-		var url = "http://localhost:8000/feature/feature/"+self.featureId()+"/";
+		var url = featureURL+self.featureId()+"/";
 		$.ajax({
 			url:URL,type:'DELETE',
 			success:function(result){
@@ -400,7 +403,7 @@ var clientViewModel = function(){
 	}
 	self.saveProductArea = function(){
 		var data = {"name":self.productAreaName()};
-		$.post("http://localhost:8000/feature/products/",data,function(response,status){
+		$.post(productURL,data,function(response,status){
 			self.SaveSuccess(true);
 			self.SaveSuccessMsg('Data Saved successfully.');
 		}).fail(function(response,status){
@@ -417,7 +420,7 @@ var clientViewModel = function(){
 
 	self.deleteProductArea = function(val){
 		if(self.featureClient()){
-			var URL = "http://localhost:8000/feature/products/"+self.featureProductArea().id();
+			var URL = productURL+self.featureProductArea().id();
 			console.log(URL);
 			$.ajax({
 				url:URL,type:'DELETE',
@@ -437,7 +440,7 @@ var clientViewModel = function(){
 			var data = {"name":self.productAreaName()};
 			data = JSON.stringify(data);
 			var headers = {'Content-type':'application/json'};
-			var URL = "http://localhost:8000/feature/products/"+self.featureProductArea().id()+"/";
+			var URL = productURL+self.featureProductArea().id()+"/";
 			$.ajax({
 				url:URL,type:'PUT',data:data,headers:headers,
 				success:function(result){
