@@ -1,5 +1,5 @@
 var mainURL = window.location.protocol+"//"+window.location.host+"/feature/";
-var clientURL = mainURL+"client/",productURL = mainURL+"product/",featureURL = mainURL+"feature/"
+var clientURL = mainURL+"client/",productURL = mainURL+"products/",featureURL = mainURL+"feature/"
 
 ko.validation.init({
 	registerExtenders: true,
