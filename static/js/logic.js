@@ -392,7 +392,7 @@ var clientViewModel = function(){
 	})
 
 	self.addProductToggle = function(){
-		self.addChangeToggle();self.clientName(undefined);
+		self.addChangeToggle();self.featureProductArea(undefined);
 	}
 	self.updateProductToggle = function(){
 		console.log(self.productAreaList());
