@@ -102,7 +102,7 @@
 	<div class="container" style="padding-top:10px;">
 		<div class="row">
 			<div class="col-sm-8">
-				<select data-bind="options:pageSizeList,value:pageSize,optionsCaption:'No of rows...'"></select>
+				<!-- <select data-bind="options:pageSizeList,value:pageSize,optionsCaption:'No of rows...'"></select> -->
 			</div>
 			<div class="col-sm-4">Showing 1 to <span data-bind="text:searchList().length"></span> of <span data-bind="text:searchList().length"></span> features</div>
 		</div>
@@ -110,12 +110,12 @@
 			<table class="table table-bordered table-hover">
 				<thead class="thead-dark">
 					<tr>
-						<th style="width:10%">Title<span><i class="fa fa-sort-asc" data-bind="click:titleAsc"></i><i class="fa fa-sort-desc" data-bind="click:titleDesc"></i></span></th>
-						<th style="width:40%">Description<span><i class="fa fa-sort-asc" data-bind="click:descAsc"></i><i class="fa fa-sort-desc" data-bind="click:descDesc"></i></span></th>
-						<th style="width:10%">Client<span><i class="fa fa-sort-asc" data-bind="click:cliAsc"></i><i class="fa fa-sort-desc" data-bind="click:cliDesc"></i></span></th>
-						<th style="width:10%">Client Priority<span><i class="fa fa-sort-asc" data-bind="click:cpAsc"></i><i class="fa fa-sort-desc" data-bind="click:cpDesc"></i></span></th>
-						<th style="width:10%">Product Area<span><i class="fa fa-sort-asc" data-bind="click:paAsc"></i><i class="fa fa-sort-desc" data-bind="click:paDesc"></i></span></th>
-						<th style="width:10%">Target Date<span><i class="fa fa-sort-asc" data-bind="click:tdAsc"></i><i class="fa fa-sort-desc" data-bind="click:tdDesc"></i></span></th>
+						<th style="width:10%" data-bind="click:titleAsc">Title<span><i class="fa fa-sort-amount-asc" data-bind="visible:titleSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:titleSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:titleSort()===0"></i></span></th>
+						<th style="width:36%" data-bind="click:descAsc">Description<span><i class="fa fa-sort-amount-asc" data-bind="visible:descSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:descSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:descSort()===0"></i></span></th>
+						<th style="width:10%" data-bind="click:cliAsc">Client<span><i class="fa fa-sort-amount-asc" data-bind="visible:clientSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:clientSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:clientSort()===0"></i></span></th>
+						<th style="width:10%" data-bind="click:cpAsc">Priority<span><i class="fa fa-sort-amount-asc" data-bind="visible:cliPriSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:cliPriSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:cliPriSort()===0"></i></span></th>
+						<th style="width:10%" data-bind="click:paAsc">Product<span><i class="fa fa-sort-amount-asc" data-bind="visible:proAreaSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:proAreaSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:proAreaSort()===0"></i></span></th>
+						<th style="width:14%" data-bind="click:tdAsc">Target Date<span><i class="fa fa-sort-amount-asc" data-bind="visible:targetDateSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:targetDateSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:targetDateSort()===0"></i></span></th>
 						<th style="width:10%">Actions</th>
 					</tr>
 				</thead>
@@ -127,19 +127,19 @@
 						<td data-bind="text:clientPriority"></td>
 						<td data-bind="text:productArea().name()"></td>
 						<td data-bind="text:targetDate"></th>
-							<td><button class="btn btn-success" data-bind="click:$parent.updateFeature"><span><i class="fa fa-pencil"></i></span></button>&nbsp;<button class="btn btn-danger" data-bind="click:$parent.deleteFeature"><span><i class="fa fa-trash-o"></i></span></button></td>
+							<td><button class="btn btn-success btn-sm" data-bind="click:$parent.updateFeature"><span><i class="fa fa-pencil"></i></span></button>&nbsp;<button class="btn btn-danger btn-sm" data-bind="click:$parent.deleteFeature"><span><i class="fa fa-trash-o"></i></span></button></td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
-			<div class="row">
+			<!-- <div class="row">
 			<div class="col-sm-5"></div>
 				<div class="col-sm-7">
 					<button class="btn btn-secondary" >Prev</button>
 					<button class="btn btn-info">1</button>
 					<button class="btn btn-secondary">Next</button>
 				</div>
-			</div>
+			</div> -->
 
 			<!-- Modal 1 -->
 			<div class="modal fade" id="featureModal" tabindex="-1" role="dialog" aria-hidden="true">
