@@ -91,6 +91,8 @@ var clientViewModel = function(){
 	self.featureSaveSuccess = ko.observable(false);
 	self.featureSaveSuccessMsg = ko.observable('');
 
+	self.pageSizeList = ko.observableArray([5,10,25,50,100]);self.pageNumber = ko.observable(1);
+	self.prevToggle = ko.observable(false),self.nextToggle = ko.observable(false);self.pageSize = ko.observable(5);
 
 
 
@@ -551,6 +553,7 @@ var clientViewModel = function(){
 		},
 		owner:self
 	});
+
 
 	/********************        All Sortin function        ***********************/
 	self.titleAsc = function(){

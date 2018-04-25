@@ -68,33 +68,36 @@
 				</form>
 			</nav>
 		</div>
-		<br/>
 		<div class="container">
-			<div class="row" data-bind="visible:showFeature">
+			<div class="row" data-bind="visible:showFeature" style="padding-top:10px;">
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#featureModal" data-bind="click:addFeatureToggle">
-					Add Feature
+					<i class="fa fa-plus"></i>Add Feature
 				</button>
 			</div>
-			<div class="row" data-bind="visible:showClient">
+			<div class="row" data-bind="visible:showClient" style="padding-top:10px;">
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#clientModal" data-bind="click:addClientToggle">
-					Add client
+					<i class="fa fa-plus"></i>Add client
 				</button>&nbsp;&nbsp;
-				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#clientModal" data-bind="click:updateClientToggle">Update Client</button>
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#clientModal" data-bind="click:updateClientToggle"><i class="fa fa-pencil"></i>Update Client</button>
 
-				&nbsp;&nbsp;<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#clientModal" data-bind="click:deleteClientToggle">Delete Client</button>
+				&nbsp;&nbsp;<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#clientModal" data-bind="click:deleteClientToggle"><i class="fa fa-trash-o"></i>Delete Client</button>
 			</div>
-			<div class="row" data-bind="visible:showProduct">
+			<div class="row" data-bind="visible:showProduct" style="padding-top:10px;">
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productModal" data-bind="click:addProductToggle">
-					Add Product Area
+					<i class="fa fa-plus"></i>Add Product Area
 				</button>&nbsp;&nbsp;
-				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#productModal" data-bind="click:updateProductToggle">Update Product Area</button>
+				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#productModal" data-bind="click:updateProductToggle"><i class="fa fa-pencil"></i>Update Product Area</button>
 
-				&nbsp;&nbsp;<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#productModal" data-bind="click:deleteProductToggle">Delete Product Area</button>
+				&nbsp;&nbsp;<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#productModal" data-bind="click:deleteProductToggle"><i class="fa fa-trash-o"></i>Delete Product Area</button>
 			</div>
 		</div>
-		<br/>
-		<div class="container">
+		<div class="container" style="padding-top:10px;">
 			<div class="row">
+				<!-- <div class="col-sm-8"><select><option>No of rows...</option><option value="5">5</option></select></div> -->
+				<div class="col-sm-8"></div>
+				<div class="col-sm-4">Showing 1 to <span data-bind="text:searchList().length"></span> of <span data-bind="text:searchList().length"></span> features</div>
+			</div>
+			<div class="row" style="padding-top: 10px;">
 				<table class="table table-bordered">
 					<thead class="thead-dark">
 						<tr>
@@ -115,10 +118,11 @@
 							<th data-bind="text:clientPriority"></th>
 							<th data-bind="text:productArea().name()"></th>
 							<th data-bind="text:targetDate"></th>
-							<th><button class="btn btn-success" data-bind="click:$parent.updateFeature">Update</button>&nbsp;<button class="btn btn-danger" data-bind="click:$parent.deleteFeature">Delete</button></th>
+							<th><button class="btn btn-success" data-bind="click:$parent.updateFeature"><span><i class="fa fa-pencil"></i></span></button>&nbsp;<button class="btn btn-danger" data-bind="click:$parent.deleteFeature"><span><i class="fa fa-trash-o"></i></span></button></th>
 						</tr>
 					</tbody>
 				</table>
+
 			</div>
 		</div>
 
