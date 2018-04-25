@@ -388,6 +388,7 @@ var clientViewModel = function(){
 
 	self.deleteFeature = function(val){
 		self.SaveSuccess(false);self.SaveSuccessMsg('');
+		console.log(val.id());
 		self.featureId(val.id());
 		$('#featureModal').modal('show');
 		self.deleteFeatureToggle();
@@ -396,10 +397,10 @@ var clientViewModel = function(){
 	};
 
 	self.deleteFeatureItem = function(val){
-		alert('in')
+		console.log(self.featureId());
 		var url = featureURL+self.featureId()+"/";
 		$.ajax({
-			url:URL,type:'DELETE',
+			url:url,type:'DELETE',
 			success:function(result){
 				self.SaveSuccess(true);self.SaveSuccessMsg('Feature deleted successfully.');
 				setTimeout(function(){
