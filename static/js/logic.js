@@ -163,8 +163,10 @@ var clientViewModel = function(){
 					self.featureList.push(new Feature(data[i]['id'],data[i]['title'],data[i]['description'],self.clientList()[clientObj],data[i]['client_priority'],targetdate,self.productAreaList()[productObj]));
 					console.log(i);
 				}
+				self.searchList(self.featureList().slice());
 			}
 		});
+
 	};
 
 	/**************     functionalities of client     ******************/
@@ -226,7 +228,12 @@ var clientViewModel = function(){
 							error_string += response[i][key];
 						})
 					}
-					self.SaveSuccess(true);self.SaveSuccessMsg(error_string);
+					self.SaveSuccess(true);
+					if(error_string.length>0){
+						self.SaveSuccessMsg(error_string);
+					}else{
+						self.SaveSuccessMsg('Oops! Something wrong happened.Try again later.')
+					}
 				}
 			});
 		}
@@ -253,7 +260,12 @@ var clientViewModel = function(){
 							error_string += response[i][key];
 						})
 					}
-					self.SaveSuccess(true);self.SaveSuccessMsg(error_string);
+					self.SaveSuccess(true);
+					if(error_string.length>0){
+						self.SaveSuccessMsg(error_string);
+					}else{
+						self.SaveSuccessMsg('Oops! Something wrong happened.Try again later.')
+					}
 				}
 			});
 		}else{
@@ -295,7 +307,10 @@ var clientViewModel = function(){
 		$.ajax({
 			url:featureURL,type:'post',headers:headers,data:data,
 			success: function(){
-				self.SaveSuccess(true);self.SaveSuccessMsg('Data Saved successfully.')
+				self.SaveSuccess(true);self.SaveSuccessMsg('Feature Saved successfully.')
+				setTimeout(function(){
+					$('#featureModal').modal('hide');self.updateFeatureList();
+				},300);
 			},
 			error: function(response){
 				var error_string = "";
@@ -304,7 +319,12 @@ var clientViewModel = function(){
 						error_string += response[i][key];
 					})
 				}
-				self.SaveSuccess(true);self.SaveSuccessMsg(error_string);
+				self.SaveSuccess(true);
+				if(error_string.length>0){
+					self.SaveSuccessMsg(error_string);
+				}else{
+					self.SaveSuccessMsg('Oops! Something wrong happened.Try again later.')
+				}
 			}
 		});
 		/*$.post("http://localhost:8000/feature/feature/",headers,data,function(response,status){
@@ -353,7 +373,12 @@ var clientViewModel = function(){
 				console.log(errorThrown);
 				var error_string = "";
 				error_string = jqXHR['responseJSON']['error'];
-				self.SaveSuccess(true);self.SaveSuccessMsg(error_string);
+				self.SaveSuccess(true);
+				if(error_string.length>0){
+					self.SaveSuccessMsg(error_string);
+				}else{
+					self.SaveSuccessMsg('Oops! Something wrong happened.Try again later.')
+				}
 			}
 		});
 	};
@@ -379,14 +404,15 @@ var clientViewModel = function(){
 					$('#featureModal').modal('hide');self.updateFeatureList();
 				},300);
 			},
-			error: function(response){
+			error: function(jqXHR, textStatus, errorThrown){
+				self.SaveSuccess(true);
 				var error_string = "";
-				for (var i=0;i<response.length;i++){
-					Object.keys(response[i]).forEach(function(key) {
-						error_string += response[i][key];
-					})
+				error_string = jqXHR['responseJSON']['error'];
+				if(error_string.length>0){
+					self.SaveSuccessMsg(error_string);
+				}else{
+					self.SaveSuccessMsg('Oops! Something wrong happened.Try again later.')
 				}
-				self.SaveSuccess(true);self.SaveSuccessMsg(error_string);
 			}
 		});
 	};
@@ -446,7 +472,17 @@ var clientViewModel = function(){
 					setTimeout(function(){
 						$('#productModal').modal('hide');self.updateClientList();
 					},300);
-				}
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					self.SaveSuccess(true);
+					var error_string = "";
+					error_string = jqXHR['responseJSON']['error'];
+					if(error_string.length>0){
+						self.SaveSuccessMsg(error_string);
+					}else{
+						self.SaveSuccessMsg('Oops! Something wrong happened.Try again later.')
+					}
+				} 
 			});
 		}
 	};
@@ -465,6 +501,16 @@ var clientViewModel = function(){
 					setTimeout(function(){
 						$('#productModal').modal('hide');self.updateClientList();
 					},300);
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					self.SaveSuccess(true);
+					var error_string = "";
+					error_string = jqXHR['responseJSON']['error'];
+					if(error_string.length>0){
+						self.SaveSuccessMsg(error_string);
+					}else{
+						self.SaveSuccessMsg('Oops! Something wrong happened.Try again later.')
+					}
 				}
 			});
 		}else{
@@ -481,28 +527,82 @@ var clientViewModel = function(){
 
 
 
-	self.Query = ko.observable('');self.searchFeatureList = ko.observableArray();
+	self.Query = ko.observable(''),self.searchList = ko.observableArray();
 
-	self.textSearch = function(newVal){
-		var FeatureList = self.featureList();
-		self.searchFeatureList.removeAll();
-		for(var x=0;x<FeatureList.length;x++){
-			if(FeatureList[x].title().toLowerCase().indexOf(newVal.toLowerCase()) >= 0){
-				console.log(FeatureList[x].title()+'x=='+x);
-				self.searchFeatureList().push(FeatureList[x]);
+
+
+	self.textSearch = ko.computed({
+		read:function(){
+			var q = self.Query().toLowerCase();
+			/*self.searchList(self.featureList().slice());*/
+			if(q.length>0){
+				var returnVal = self.featureList().filter(function(i) {
+					return i.title().toLowerCase().indexOf(q) >= 0||i.description().toLowerCase().indexOf(q) >= 0||i.client().name().toLowerCase().indexOf(q) >= 0||
+					i.clientPriority().toString().toLowerCase().indexOf(q) >= 0||i.targetDate().toLowerCase().indexOf(q) >= 0||i.productArea().name().toLowerCase().indexOf(q) >= 0;
+				});
+				return self.searchList(returnVal.slice());
+			}else{
+				return self.searchList(self.featureList().slice());
 			}
-		}
-		console.log(self.searchFeatureList());
-	}
-
-	self.Query.subscribe(function(newVal){
-		self.textSearch(newVal);
+		},
+		write:function(value){
+			console.log('value');
+			self.searchList(value.slice());
+		},
+		owner:self
 	});
 
+	/********************        All Sortin function        ***********************/
+	self.titleAsc = function(){
+		self.textSearch(self.searchList().sort(function (a, b) {return a.title().toLowerCase() == b.title().toLowerCase() ? 0 : (a.title().toLowerCase() < b.title().toLowerCase() ? -1 : 1);}).slice());
+	}
+
+	self.descAsc = function(){
+		self.textSearch(self.searchList().sort(function (a, b) {return a.description().toLowerCase() == b.description().toLowerCase() ? 0 : (a.description().toLowerCase() < b.description().toLowerCase() ? -1 : 1);}).slice());
+	}
+
+	self.cliAsc = function(){
+		self.textSearch(self.searchList().sort(function (a, b) {return a.client().name().toLowerCase() == b.client().name().toLowerCase() ? 0 : (a.client().name().toLowerCase() < b.client().name().toLowerCase() ? -1 : 1);}).slice());
+	}
+
+	self.cpAsc = function(){
+		self.textSearch(self.searchList().sort(function (a, b) {return a.clientPriority() == b.clientPriority() ? 0 : (a.clientPriority() < b.clientPriority() ? -1 : 1);}).slice());
+	}
+
+	self.paAsc = function(){
+		self.textSearch(self.searchList().sort(function (a, b) {return a.productArea().name().toLowerCase() == b.productArea().name().toLowerCase() ? 0 : (a.productArea().name().toLowerCase() < b.productArea().name().toLowerCase() ? -1 : 1);}).slice());
+	}
+
+	self.tdAsc = function(){
+		self.textSearch(self.searchList().sort(function (a, b) {return new Date(a.targetDate()) == new Date(b.targetDate()) ? 0 : (new Date(a.targetDate()) < new Date(b.targetDate()) ? -1 : 1);}).slice());
+	}
+
+	self.titleDesc = function(){
+		self.textSearch(self.searchList().sort(function (a, b) {return a.title().toLowerCase() == b.title().toLowerCase() ? 0 : (a.title().toLowerCase() > b.title().toLowerCase() ? -1 : 1);}).slice());
+	}
+
+	self.descDesc = function(){
+		self.textSearch(self.searchList().sort(function (a, b) {return a.description().toLowerCase() == b.description().toLowerCase() ? 0 : (a.description().toLowerCase() > b.description().toLowerCase() ? -1 : 1);}).slice());
+	}
+
+	self.cliDesc = function(){
+		self.textSearch(self.searchList().sort(function (a, b) {return a.client().name().toLowerCase() == b.client().name().toLowerCase() ? 0 : (a.client().name().toLowerCase() > b.client().name().toLowerCase() ? -1 : 1);}).slice());
+	}
+
+	self.cpDesc = function(){
+		self.textSearch(self.searchList().sort(function (a, b) {return a.clientPriority() == b.clientPriority() ? 0 : (a.clientPriority() > b.clientPriority() ? -1 : 1);}).slice());
+	}
+
+	self.paDesc = function(){
+		self.textSearch(self.searchList().sort(function (a, b) {return a.productArea().name().toLowerCase() == b.productArea().name().toLowerCase() ? 0 : (a.productArea().name().toLowerCase() > b.productArea().name().toLowerCase() ? -1 : 1);}).slice());
+	}
+
+	self.tdDesc = function(){
+		self.textSearch(self.searchList().sort(function (a, b) {return new Date(a.targetDate()) == new Date(b.targetDate()) ? 0 : (new Date(a.targetDate()) > new Date(b.targetDate()) ? -1 : 1);}).slice());
+	}
 };
 
 clientViewModel.errors = ko.validation.group(clientViewModel);
-console.log(clientViewModel.errors())
 
 var vm = new clientViewModel();
 vm.updateClientList();
