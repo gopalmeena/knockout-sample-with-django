@@ -39,375 +39,390 @@
 			width:100%;
 			text-align:center;
 			color:#fff;
-		</style>
-	</head>
-	<body>
-		<div id="overlay">
-			Loading...
-			<div id="progstat"></div>
-			<div id="progress"></div>
+		}
+		table{
+			border-collapse:collapse;
+			table-layout:fixed;
+		}
+		table td {
+			word-wrap:break-word;
+		}
+	</style>
+</head>
+<body>
+	<div id="overlay">
+		Loading...
+		<div id="progstat"></div>
+		<div id="progress"></div>
+	</div>
+	<div class="container-fluid">
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-md-70">
+			<img src="{% static 'img/logo.png' %}" height="30" width="30" alt="">&nbsp;&nbsp;
+			<a class="navbar-brand" href="#">Xceedence Feature Registraion Portal</a>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" data-bind="click:featureToggle">Features</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-bind="click:clientToggle">Clients</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-bind="click:productToggle">Products</a>
+				</li>
+			</ul>
+			<form class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2" data-bind="value:Query,valueUpdate:'keyup'" type="search" placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</form>
+		</nav>
+	</div>
+	<div class="container">
+		<div class="row" data-bind="visible:showFeature" style="padding-top:10px;">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#featureModal" data-bind="click:addFeatureToggle">
+				<i class="fa fa-plus"></i>Add Feature
+			</button>
 		</div>
-		<div class="container-fluid">
-			<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-md-70">
-				<img src="{% static 'img/logo.png' %}" height="30" width="30" alt="">&nbsp;&nbsp;
-				<a class="navbar-brand" href="#">Xceedence Feature Registraion Portal</a>
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active">
-						<a class="nav-link" data-bind="click:featureToggle">Features</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-bind="click:clientToggle">Clients</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-bind="click:productToggle">Products</a>
-					</li>
-				</ul>
-				<form class="form-inline my-2 my-lg-0">
-					<input class="form-control mr-sm-2" data-bind="value:Query,valueUpdate:'keyup'" type="search" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-				</form>
-			</nav>
-		</div>
-		<div class="container">
-			<div class="row" data-bind="visible:showFeature" style="padding-top:10px;">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#featureModal" data-bind="click:addFeatureToggle">
-					<i class="fa fa-plus"></i>Add Feature
-				</button>
-			</div>
-			<div class="row" data-bind="visible:showClient" style="padding-top:10px;">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#clientModal" data-bind="click:addClientToggle">
-					<i class="fa fa-plus"></i>Add client
-				</button>&nbsp;&nbsp;
-				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#clientModal" data-bind="click:updateClientToggle"><i class="fa fa-pencil"></i>Update Client</button>
+		<div class="row" data-bind="visible:showClient" style="padding-top:10px;">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#clientModal" data-bind="click:addClientToggle">
+				<i class="fa fa-plus"></i>Add client
+			</button>&nbsp;&nbsp;
+			<button type="button" class="btn btn-success" data-toggle="modal" data-target="#clientModal" data-bind="click:updateClientToggle"><i class="fa fa-pencil"></i>Update Client</button>
 
-				&nbsp;&nbsp;<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#clientModal" data-bind="click:deleteClientToggle"><i class="fa fa-trash-o"></i>Delete Client</button>
-			</div>
-			<div class="row" data-bind="visible:showProduct" style="padding-top:10px;">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productModal" data-bind="click:addProductToggle">
-					<i class="fa fa-plus"></i>Add Product Area
-				</button>&nbsp;&nbsp;
-				<button type="button" class="btn btn-success" data-toggle="modal" data-target="#productModal" data-bind="click:updateProductToggle"><i class="fa fa-pencil"></i>Update Product Area</button>
-
-				&nbsp;&nbsp;<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#productModal" data-bind="click:deleteProductToggle"><i class="fa fa-trash-o"></i>Delete Product Area</button>
-			</div>
+			&nbsp;&nbsp;<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#clientModal" data-bind="click:deleteClientToggle"><i class="fa fa-trash-o"></i>Delete Client</button>
 		</div>
-		<div class="container" style="padding-top:10px;">
-			<div class="row">
-				<!-- <div class="col-sm-8"><select><option>No of rows...</option><option value="5">5</option></select></div> -->
-				<div class="col-sm-8"></div>
-				<div class="col-sm-4">Showing 1 to <span data-bind="text:searchList().length"></span> of <span data-bind="text:searchList().length"></span> features</div>
+		<div class="row" data-bind="visible:showProduct" style="padding-top:10px;">
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productModal" data-bind="click:addProductToggle">
+				<i class="fa fa-plus"></i>Add Product Area
+			</button>&nbsp;&nbsp;
+			<button type="button" class="btn btn-success" data-toggle="modal" data-target="#productModal" data-bind="click:updateProductToggle"><i class="fa fa-pencil"></i>Update Product Area</button>
+
+			&nbsp;&nbsp;<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#productModal" data-bind="click:deleteProductToggle"><i class="fa fa-trash-o"></i>Delete Product Area</button>
+		</div>
+	</div>
+	<div class="container" style="padding-top:10px;">
+		<div class="row">
+			<div class="col-sm-8">
+				<select data-bind="options:pageSizeList,value:pageSize,optionsCaption:'No of rows...'"></select>
 			</div>
-			<div class="row" style="padding-top: 10px;">
-				<table class="table table-bordered">
-					<thead class="thead-dark">
-						<tr>
-							<th>Title<span><i class="fa fa-sort-asc" data-bind="click:titleAsc"></i><i class="fa fa-sort-desc" data-bind="click:titleDesc"></i></span></th>
-							<th>Description<span><i class="fa fa-sort-asc" data-bind="click:descAsc"></i><i class="fa fa-sort-desc" data-bind="click:descDesc"></i></span></th>
-							<th>Client<span><i class="fa fa-sort-asc" data-bind="click:cliAsc"></i><i class="fa fa-sort-desc" data-bind="click:cliDesc"></i></span></th>
-							<th>Client Priority<span><i class="fa fa-sort-asc" data-bind="click:cpAsc"></i><i class="fa fa-sort-desc" data-bind="click:cpDesc"></i></span></th>
-							<th>Product Area<span><i class="fa fa-sort-asc" data-bind="click:paAsc"></i><i class="fa fa-sort-desc" data-bind="click:paDesc"></i></span></th>
-							<th>Target Date<span><i class="fa fa-sort-asc" data-bind="click:tdAsc"></i><i class="fa fa-sort-desc" data-bind="click:tdDesc"></i></span></th>
-							<th>Actions</th>
-						</tr>
-					</thead>
-					<tbody data-bind="foreach:searchList">
-						<tr>
-							<th data-bind="text:title"></th>
-							<th data-bind="text:description"></th>
-							<th data-bind="text:client().name()"></th>
-							<th data-bind="text:clientPriority"></th>
-							<th data-bind="text:productArea().name()"></th>
-							<th data-bind="text:targetDate"></th>
-							<th><button class="btn btn-success" data-bind="click:$parent.updateFeature"><span><i class="fa fa-pencil"></i></span></button>&nbsp;<button class="btn btn-danger" data-bind="click:$parent.deleteFeature"><span><i class="fa fa-trash-o"></i></span></button></th>
+			<div class="col-sm-4">Showing 1 to <span data-bind="text:searchList().length"></span> of <span data-bind="text:searchList().length"></span> features</div>
+		</div>
+		<div class="row" style="padding-top: 10px;">
+			<table class="table table-bordered table-hover">
+				<thead class="thead-dark">
+					<tr>
+						<th style="width:10%">Title<span><i class="fa fa-sort-asc" data-bind="click:titleAsc"></i><i class="fa fa-sort-desc" data-bind="click:titleDesc"></i></span></th>
+						<th style="width:40%">Description<span><i class="fa fa-sort-asc" data-bind="click:descAsc"></i><i class="fa fa-sort-desc" data-bind="click:descDesc"></i></span></th>
+						<th style="width:10%">Client<span><i class="fa fa-sort-asc" data-bind="click:cliAsc"></i><i class="fa fa-sort-desc" data-bind="click:cliDesc"></i></span></th>
+						<th style="width:10%">Client Priority<span><i class="fa fa-sort-asc" data-bind="click:cpAsc"></i><i class="fa fa-sort-desc" data-bind="click:cpDesc"></i></span></th>
+						<th style="width:10%">Product Area<span><i class="fa fa-sort-asc" data-bind="click:paAsc"></i><i class="fa fa-sort-desc" data-bind="click:paDesc"></i></span></th>
+						<th style="width:10%">Target Date<span><i class="fa fa-sort-asc" data-bind="click:tdAsc"></i><i class="fa fa-sort-desc" data-bind="click:tdDesc"></i></span></th>
+						<th style="width:10%">Actions</th>
+					</tr>
+				</thead>
+				<tbody data-bind="foreach:searchList">
+					<tr>
+						<td data-bind="text:title"></td>
+						<td data-bind="text:description"></td>
+						<td data-bind="text:client().name()"></td>
+						<td data-bind="text:clientPriority"></td>
+						<td data-bind="text:productArea().name()"></td>
+						<td data-bind="text:targetDate"></th>
+							<td><button class="btn btn-success" data-bind="click:$parent.updateFeature"><span><i class="fa fa-pencil"></i></span></button>&nbsp;<button class="btn btn-danger" data-bind="click:$parent.deleteFeature"><span><i class="fa fa-trash-o"></i></span></button></td>
 						</tr>
 					</tbody>
 				</table>
-
 			</div>
-		</div>
+			<div class="row">
+			<div class="col-sm-5"></div>
+				<div class="col-sm-7">
+					<button class="btn btn-secondary" >Prev</button>
+					<button class="btn btn-info">1</button>
+					<button class="btn btn-secondary">Next</button>
+				</div>
+			</div>
 
-		<!-- Modal 1 -->
-		<div class="modal fade" id="featureModal" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h3 class="modal-title" id="featureModalTitle"><span data-bind="visible:saveButton()">Add</span><span data-bind="visible:updateButton()">Update</span><span data-bind="visible:deleteButton()">Delete</span> Feature</h3>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Title: </span>
+			<!-- Modal 1 -->
+			<div class="modal fade" id="featureModal" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h3 class="modal-title" id="featureModalTitle"><span data-bind="visible:saveButton()">Add</span><span data-bind="visible:updateButton()">Update</span><span data-bind="visible:deleteButton()">Delete</span> Feature</h3>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Title: </span>
+								</div>
+								<input type="text" class="form-control" id="featureTitle" data-bind="value:featureTitle" placeholder="Enter Title" />
 							</div>
-							<input type="text" class="form-control" id="featureTitle" data-bind="value:featureTitle" placeholder="Enter Title" />
-						</div>
-						<div data-bind="visible:!featureTitle.isValid() & featureTitle.isModified()">
-							<p data-bind="validationMessage:featureTitle" class="text-danger"></p>
-						</div>
-						<div class="input-group" data-bind="visible:deleteButton()">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Title: </span>
+							<div data-bind="visible:!featureTitle.isValid() & featureTitle.isModified()">
+								<p data-bind="validationMessage:featureTitle" class="text-danger"></p>
 							</div>
-							<input class="form-control" id="featureTitle" data-bind="disable:true,value:featureTitle" placeholder="Enter Title" />
-						</div>
-						<br/>
-						<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Client: </span>
+							<div class="input-group" data-bind="visible:deleteButton()">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Title: </span>
+								</div>
+								<input class="form-control" id="featureTitle" data-bind="disable:true,value:featureTitle" placeholder="Enter Title" />
 							</div>
-							<select data-bind="options:clientList,optionsText:'name',value:featureClient,optionsCaption:'Choose Client...'" class="form-control"></select>
-						</div>
-						<div data-bind="visible:!featureClient.isValid() & featureClient.isModified()">
-							<p data-bind="validationMessage:featureClient" class="text-danger"></p>
-						</div>
-						<div class="input-group" data-bind="visible:deleteButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Client: </span>
+							<br/>
+							<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Client: </span>
+								</div>
+								<select data-bind="options:clientList,optionsText:'name',value:featureClient,optionsCaption:'Choose Client...'" class="form-control"></select>
 							</div>
-							<select data-bind="options:clientList,optionsText:'name',value:featureClient,optionsCaption:'Choose Client...',disbale:true" class="form-control"></select>
-						</div>
-						<br/>
-						<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Priority: </span>
+							<div data-bind="visible:!featureClient.isValid() & featureClient.isModified()">
+								<p data-bind="validationMessage:featureClient" class="text-danger"></p>
 							</div>
-							<input type="number" class="form-control" id="clientPriority" data-bind="value:clientPriority" placeholder="Enter Client Priority"/>
-						</div>
-						<div data-bind="visible:!featureClient.isValid() & featureClient.isModified()">
-							<p data-bind="validationMessage:featureClient" class="text-danger"></p>
-						</div>
-						<div class="input-group" data-bind="visible:deleteButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Priority: </span>
+							<div class="input-group" data-bind="visible:deleteButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Client: </span>
+								</div>
+								<select data-bind="options:clientList,optionsText:'name',value:featureClient,optionsCaption:'Choose Client...',disbale:true" class="form-control"></select>
 							</div>
-							<input type="number" class="form-control" id="clientPriority" data-bind="disable:true,value:clientPriority" placeholder="Enter Client Priority"/>
-						</div>
-						<br/>
-						<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Target Date: </span>
+							<br/>
+							<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Priority: </span>
+								</div>
+								<input type="number" class="form-control" id="clientPriority" data-bind="value:clientPriority" placeholder="Enter Client Priority" min="1"/>
 							</div>
-							<div data-provide="datepicker">
-								<input type="text" class="form-control" data-bind="value:featureTargetDate" id="datepicker" autoclose="true" placeholder="MM/DD/YYYY">
+							<div data-bind="visible:!featureClient.isValid() & featureClient.isModified()">
+								<p data-bind="validationMessage:featureClient" class="text-danger"></p>
+							</div>
+							<div class="input-group" data-bind="visible:deleteButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Priority: </span>
+								</div>
+								<input type="number" class="form-control" id="clientPriority" data-bind="disable:true,value:clientPriority" placeholder="Enter Client Priority" min="1"/>
+							</div>
+							<br/>
+							<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Target Date: </span>
+								</div>
+								<div data-provide="datepicker">
+									<input type="text" class="form-control" data-bind="value:featureTargetDate" id="datepicker" autoclose="true" placeholder="MM/DD/YYYY">
+								</div>
+							</div>
+							<div data-bind="visible:!featureTargetDate.isValid() & featureTargetDate.isModified()">
+								<p data-bind="validationMessage:featureTargetDate" class="text-danger"></p>
+							</div>
+							<div class="input-group" data-bind="visible:deleteButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Target Date: </span>
+								</div>
+								<div data-provide="datepicker">
+									<input type="text" class="form-control" data-bind="disable:true,value:featureTargetDate" id="datepicker" autoclose="true" placeholder="MM/DD/YYYY">
+								</div>
+							</div>
+							<br/>
+							<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Product Area: </span>
+								</div>
+								<select data-bind="options:productAreaList,optionsText:'name',value:featureProductArea,optionsCaption:'Choose Product...'" class="form-control"></select>
+							</div>
+							<div data-bind="visible:!featureProductArea.isValid() & featureProductArea.isModified()">
+								<p data-bind="validationMessage:featureProductArea" class="text-danger"></p>
+							</div>
+							<div class="input-group" data-bind="visible:deleteButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Product Area: </span>
+								</div>
+								<select data-bind="options:productAreaList,optionsText:'name',value:featureProductArea,optionsCaption:'Choose Product...',disbale:true" class="form-control"></select>
+							</div>
+							<br/>
+							<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Description: </span>
+								</div>
+								<textarea class="form-control" placeholder="Enter Description(max length: 800 characters)" data-bind="value:featureDescription"></textarea>
+							</div>
+							<div data-bind="visible:!featureDescription.isValid() & featureDescription.isModified()">
+								<p data-bind="validationMessage:featureDescription" class="text-danger"></p>
+							</div>
+							<div class="input-group" data-bind="visible:deleteButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Description: </span>
+								</div>
+								<textarea class="form-control" placeholder="Enter Description(max length: 800 characters)" data-bind="value:featureDescription,disable:true"></textarea>
 							</div>
 						</div>
-						<div data-bind="visible:!featureTargetDate.isValid() & featureTargetDate.isModified()">
-							<p data-bind="validationMessage:featureTargetDate" class="text-danger"></p>
-						</div>
-						<div class="input-group" data-bind="visible:deleteButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Target Date: </span>
+						<div class="modal-footer">
+							<div data-bind="visible:SaveSuccess">
+								<p data-bind="text:SaveSuccessMsg" class="text-success"></p>
 							</div>
-							<div data-provide="datepicker">
-								<input type="text" class="form-control" data-bind="disable:true,value:featureTargetDate" id="datepicker" autoclose="true" placeholder="MM/DD/YYYY">
-							</div>
+							<button type="button" class="btn btn-success" data-bind="visible:saveButton,click:saveFeature">Save</button>
+							<button type="button" class="btn btn-primary" data-bind="visible:refreshButton,click:refreshFeature">Refresh</button>
+							<button type="button" class="btn btn-success" data-bind="visible:updateButton,click:updateFeatureItem">Update</button>
+							<button type="button" class="btn btn-success" data-bind="visible:deleteButton,click:deleteFeatureItem">Delete</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 						</div>
-						<br/>
-						<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Product Area: </span>
-							</div>
-							<select data-bind="options:productAreaList,optionsText:'name',value:featureProductArea,optionsCaption:'Choose Product...'" class="form-control"></select>
-						</div>
-						<div data-bind="visible:!featureProductArea.isValid() & featureProductArea.isModified()">
-							<p data-bind="validationMessage:featureProductArea" class="text-danger"></p>
-						</div>
-						<div class="input-group" data-bind="visible:deleteButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Product Area: </span>
-							</div>
-							<select data-bind="options:productAreaList,optionsText:'name',value:featureProductArea,optionsCaption:'Choose Product...',disbale:true" class="form-control"></select>
-						</div>
-						<br/>
-						<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Description: </span>
-							</div>
-							<textarea class="form-control" placeholder="Enter Description(max length: 800 characters)" data-bind="value:featureDescription"></textarea>
-						</div>
-						<div data-bind="visible:!featureDescription.isValid() & featureDescription.isModified()">
-							<p data-bind="validationMessage:featureDescription" class="text-danger"></p>
-						</div>
-						<div class="input-group" data-bind="visible:deleteButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Description: </span>
-							</div>
-							<textarea class="form-control" placeholder="Enter Description(max length: 800 characters)" data-bind="value:featureDescription,disable:true"></textarea>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<div data-bind="visible:SaveSuccess">
-							<p data-bind="text:SaveSuccessMsg" class="text-success"></p>
-						</div>
-						<button type="button" class="btn btn-success" data-bind="visible:saveButton,click:saveFeature">Save</button>
-						<button type="button" class="btn btn-primary" data-bind="visible:refreshButton,click:refreshFeature">Refresh</button>
-						<button type="button" class="btn btn-success" data-bind="visible:updateButton,click:updateFeatureItem">Update</button>
-						<button type="button" class="btn btn-success" data-bind="visible:deleteButton,click:deleteFeatureItem">Delete</button>
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
-		</div>
 
 
-		<!-- Modal 2 -->
-		<div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
+			<!-- Modal 2 -->
+			<div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
 
-					<div class="modal-header">
-						<h3 class="modal-title" id="clientModalTitle"><span data-bind="visible:saveButton()">Add</span><span data-bind="visible:updateButton()">Update</span><span data-bind="visible:deleteButton()">Delete</span> Client</h3>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
+						<div class="modal-header">
+							<h3 class="modal-title" id="clientModalTitle"><span data-bind="visible:saveButton()">Add</span><span data-bind="visible:updateButton()">Update</span><span data-bind="visible:deleteButton()">Delete</span> Client</h3>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
 
-					<div class="modal-body">
-						<div class="input-group" data-bind="visible:deleteButton()||updateButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Client: </span>
+						<div class="modal-body">
+							<div class="input-group" data-bind="visible:deleteButton()||updateButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Client: </span>
+								</div>
+								<select data-bind="options:clientList,optionsText:'name',value:featureClient,optionsCaption:'Choose Client...'" class="form-control"></select>
 							</div>
-							<select data-bind="options:clientList,optionsText:'name',value:featureClient,optionsCaption:'Choose Client...'" class="form-control"></select>
-						</div>
-						<div data-bind="visible:updateButton()">
-							<p data-bind="validationMessage:featureClient" class="text-danger"></p>
-						</div>
-						<br/>
-						<div class="input-group" data-bind="visible:deleteButton(),if:featureClient(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Name: </span>
+							<div data-bind="visible:updateButton()">
+								<p data-bind="validationMessage:featureClient" class="text-danger"></p>
 							</div>
-							<input class="form-control" id="clientName" data-bind="disable:true,value:featureClient().name()" placeholder="Enter Client Name" />
-						</div>
-						<div class="input-group" data-bind="visible:updateButton()||saveButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text" data-bind="visible:saveButton()">Name: </span>
-								<span class="input-group-text" data-bind="visible:updateButton()">New Name: </span>
+							<br/>
+							<div class="input-group" data-bind="visible:deleteButton(),if:featureClient(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Name: </span>
+								</div>
+								<input class="form-control" id="clientName" data-bind="disable:true,value:featureClient().name()" placeholder="Enter Client Name" />
 							</div>
-							<input type="text" class="form-control" id="clientName" data-bind="value:clientName" placeholder="Enter Client Name" />
-						</div>
-						<div>
-							<p data-bind="visible:updateButton()||saveButton(),validationMessage:clientName" class="text-danger"></p>
-						</div>
-					</div>
-
-					<div class="modal-footer">
-						<div data-bind="visible:SaveSuccess">
-							<p data-bind="text:SaveSuccessMsg" class="text-success"></p>
-						</div>
-						<button type="button" class="btn btn-success" data-bind="visible:saveButton,click:saveClient">Save</button>
-						<button type="button" class="btn btn-primary" data-bind="visible:refreshButton,click:refreshClient">Refresh</button>
-						<button type="button" class="btn btn-success" data-bind="visible:updateButton,click:updateClient">Update</button>
-						<button type="button" class="btn btn-success" data-bind="visible:deleteButton,click:deleteClient">Delete</button>
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-
-
-		<!-- Modal 3 -->
-		<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-
-					<div class="modal-header">
-						<h3 class="modal-title" id="productModalTitle"><span data-bind="visible:saveButton()">Add</span><span data-bind="visible:updateButton()">Update</span><span data-bind="visible:deleteButton()">Delete</span> Product Area</h3>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-
-					<div class="modal-body">
-						<div class="input-group" data-bind="visible:deleteButton()||updateButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Product Area: </span>
+							<div class="input-group" data-bind="visible:updateButton()||saveButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text" data-bind="visible:saveButton()">Name: </span>
+									<span class="input-group-text" data-bind="visible:updateButton()">New Name: </span>
+								</div>
+								<input type="text" class="form-control" id="clientName" data-bind="value:clientName" placeholder="Enter Client Name" />
 							</div>
-							<select data-bind="options:productAreaList,optionsText:'name',value:featureProductArea,optionsCaption:'Choose Product Area...'" class="form-control"></select>
-						</div>
-						<div data-bind="visible:updateButton()">
-							<p data-bind="validationMessage:featureProductArea" class="text-danger"></p>
-						</div>
-						<br/>
-						<div class="input-group" data-bind="visible:deleteButton(),if:featureProductArea(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text">Name: </span>
+							<div>
+								<p data-bind="visible:updateButton()||saveButton(),validationMessage:clientName" class="text-danger"></p>
 							</div>
-							<input class="form-control" id="featureProductArea" data-bind="disable:true,value:featureProductArea().name()" placeholder="Enter Product Area Name" />
 						</div>
-						<div class="input-group" data-bind="visible:updateButton()||saveButton(),validationOptions: { insertMessages: false}">
-							<div class="input-group-prepend">
-								<span class="input-group-text" data-bind="visible:saveButton()">Name: </span>
-								<span class="input-group-text" data-bind="visible:updateButton()">New Name: </span>
-							</div>
-							<input type="text" class="form-control" id="productAreaName" data-bind="value:productAreaName" placeholder="Enter Product Area Name" />
-						</div>
-						<div>
-							<p data-bind="visible:updateButton()||saveButton(),validationMessage:productAreaName" class="text-danger"></p>
-						</div>
-					</div>
 
-					<div class="modal-footer">
-						<div data-bind="visible:SaveSuccess">
-							<p data-bind="text:SaveSuccessMsg" class="text-success"></p>
+						<div class="modal-footer">
+							<div data-bind="visible:SaveSuccess">
+								<p data-bind="text:SaveSuccessMsg" class="text-success"></p>
+							</div>
+							<button type="button" class="btn btn-success" data-bind="visible:saveButton,click:saveClient">Save</button>
+							<button type="button" class="btn btn-primary" data-bind="visible:refreshButton,click:refreshClient">Refresh</button>
+							<button type="button" class="btn btn-success" data-bind="visible:updateButton,click:updateClient">Update</button>
+							<button type="button" class="btn btn-success" data-bind="visible:deleteButton,click:deleteClient">Delete</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 						</div>
-						<button type="button" class="btn btn-success" data-bind="visible:saveButton,click:saveProductArea">Save</button>
-						<button type="button" class="btn btn-primary" data-bind="visible:refreshButton,click:refreshProductArea">Refresh</button>
-						<button type="button" class="btn btn-success" data-bind="visible:updateButton,click:updateProductArea">Update</button>
-						<button type="button" class="btn btn-success" data-bind="visible:deleteButton,click:deleteProductArea">Delete</button>
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
-		</div>
 
 
-		<script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'js/knockout-min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'js/knockout-debug.js' %}"></script>
-		<script type="text/javascript" src="{% static 'js/knockout.validation.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'js/logic.js' %}"></script>
-		<script>
-			$('#datepicker').datepicker({
-				uiLibrary: 'bootstrap4'
-			});
-			(function(){
-				function id(v){ return document.getElementById(v); }
-				function loadbar() {
-					var ovrl = id("overlay"),
-					prog = id("progress"),
-					stat = id("progstat"),
-					img = document.images,
-					c = 0,
-					tot = img.length;
-					if(tot == 0) return doneLoading();
+			<!-- Modal 3 -->
+			<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
 
-					function imgLoaded(){
-						c += 1;
-						var perc = ((100/tot*c) << 0) +"%";
-						prog.style.width = perc;
-						stat.innerHTML = "Loading "+ perc;
-						if(c===tot) return doneLoading();
+						<div class="modal-header">
+							<h3 class="modal-title" id="productModalTitle"><span data-bind="visible:saveButton()">Add</span><span data-bind="visible:updateButton()">Update</span><span data-bind="visible:deleteButton()">Delete</span> Product Area</h3>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+
+						<div class="modal-body">
+							<div class="input-group" data-bind="visible:deleteButton()||updateButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Product Area: </span>
+								</div>
+								<select data-bind="options:productAreaList,optionsText:'name',value:featureProductArea,optionsCaption:'Choose Product Area...'" class="form-control"></select>
+							</div>
+							<div data-bind="visible:updateButton()">
+								<p data-bind="validationMessage:featureProductArea" class="text-danger"></p>
+							</div>
+							<br/>
+							<div class="input-group" data-bind="visible:deleteButton(),if:featureProductArea(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Name: </span>
+								</div>
+								<input class="form-control" id="featureProductArea" data-bind="disable:true,value:featureProductArea().name()" placeholder="Enter Product Area Name" />
+							</div>
+							<div class="input-group" data-bind="visible:updateButton()||saveButton(),validationOptions: { insertMessages: false}">
+								<div class="input-group-prepend">
+									<span class="input-group-text" data-bind="visible:saveButton()">Name: </span>
+									<span class="input-group-text" data-bind="visible:updateButton()">New Name: </span>
+								</div>
+								<input type="text" class="form-control" id="productAreaName" data-bind="value:productAreaName" placeholder="Enter Product Area Name" />
+							</div>
+							<div>
+								<p data-bind="visible:updateButton()||saveButton(),validationMessage:productAreaName" class="text-danger"></p>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<div data-bind="visible:SaveSuccess">
+								<p data-bind="text:SaveSuccessMsg" class="text-success"></p>
+							</div>
+							<button type="button" class="btn btn-success" data-bind="visible:saveButton,click:saveProductArea">Save</button>
+							<button type="button" class="btn btn-primary" data-bind="visible:refreshButton,click:refreshProductArea">Refresh</button>
+							<button type="button" class="btn btn-success" data-bind="visible:updateButton,click:updateProductArea">Update</button>
+							<button type="button" class="btn btn-success" data-bind="visible:deleteButton,click:deleteProductArea">Delete</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+			<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+			<script type="text/javascript" src="{% static 'js/bootstrap-datepicker.min.js' %}"></script>
+			<script type="text/javascript" src="{% static 'js/knockout-min.js' %}"></script>
+			<script type="text/javascript" src="{% static 'js/knockout-debug.js' %}"></script>
+			<script type="text/javascript" src="{% static 'js/knockout.validation.min.js' %}"></script>
+			<script type="text/javascript" src="{% static 'js/logic.js' %}"></script>
+			<script>
+				$('#datepicker').datepicker({
+					uiLibrary: 'bootstrap4'
+				});
+				(function(){
+					function id(v){ return document.getElementById(v); }
+					function loadbar() {
+						var ovrl = id("overlay"),
+						prog = id("progress"),
+						stat = id("progstat"),
+						img = document.images,
+						c = 0,
+						tot = img.length;
+						if(tot == 0) return doneLoading();
+
+						function imgLoaded(){
+							c += 1;
+							var perc = ((100/tot*c) << 0) +"%";
+							prog.style.width = perc;
+							stat.innerHTML = "Loading "+ perc;
+							if(c===tot) return doneLoading();
+						}
+						function doneLoading(){
+							ovrl.style.opacity = 0;
+							setTimeout(function(){ 
+								ovrl.style.display = "none";
+							}, 1200);
+						}
+						for(var i=0; i<tot; i++) {
+							var tImg     = new Image();
+							tImg.onload  = imgLoaded;
+							tImg.onerror = imgLoaded;
+							tImg.src     = img[i].src;
+						}    
 					}
-					function doneLoading(){
-						ovrl.style.opacity = 0;
-						setTimeout(function(){ 
-							ovrl.style.display = "none";
-						}, 1200);
-					}
-					for(var i=0; i<tot; i++) {
-						var tImg     = new Image();
-						tImg.onload  = imgLoaded;
-						tImg.onerror = imgLoaded;
-						tImg.src     = img[i].src;
-					}    
-				}
-				document.addEventListener('DOMContentLoaded', loadbar, false);
-			}());
-		</script>
-	</body>
-	</html>
+					document.addEventListener('DOMContentLoaded', loadbar, false);
+				}());
+			</script>
+		</body>
+		</html>
