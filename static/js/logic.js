@@ -16,11 +16,9 @@ var Client = function(id,name){
 }
 
 var Feature = function(id,title,description,client,client_priority,target_date,product_area){
-	console.log(title+description+client+client_priority+target_date+product_area)
 	var self = this;
 	this.title = ko.observable(title),this.description = ko.observable(description),this.client = ko.observable(client);
 	this.clientPriority = ko.observable(client_priority),this.targetDate = ko.observable(target_date),this.productArea = ko.observable(product_area),this.id = ko.observable(id);
-	console.log('Done');
 }
 
 var Product = function(id,name){
@@ -88,8 +86,7 @@ var clientViewModel = function(){
 		}
 	})
 	self.featureProductArea = ko.observable().extend({required:{message:"Product Area is required"}});
-	self.featureSaveSuccess = ko.observable(false);
-	self.featureSaveSuccessMsg = ko.observable('');
+
 
 	self.titleSort = ko.observable(0);self.descSort = ko.observable(0);self.clientSort = ko.observable(0);
 	self.cliPriSort = ko.observable(1);self.proAreaSort = ko.observable(0);self.targetDateSort = ko.observable(0);
@@ -121,7 +118,7 @@ var clientViewModel = function(){
 		self.refreshButton(false);self.saveButton(false),self.updateButton(false);self.deleteButton(true);
 	}
 
-	/*Initially load all client,product are and feature */
+	/*Initially load all clients,products and features */
 	self.updateClientList = function(){
 		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		self.clientList.removeAll();
@@ -166,7 +163,6 @@ var clientViewModel = function(){
 					var targetdate = data[i]['target_date'].split('-');
 					targetdate = targetdate[1]+'/'+targetdate[2]+'/'+targetdate[0];
 					self.featureList.push(new Feature(data[i]['id'],data[i]['title'],data[i]['description'],self.clientList()[clientObj],data[i]['client_priority'],targetdate,self.productAreaList()[productObj]));
-					console.log(i);
 				}
 				self.searchList(self.featureList().slice());
 			}
@@ -186,15 +182,16 @@ var clientViewModel = function(){
 
 	self.addClientToggle = function(){
 		self.SaveSuccess(false);self.SaveSuccessMsg('');
-		self.addChangeToggle();self.clientName(undefined);
+		self.addChangeToggle();self.clientName('');self.clientName.isModified(false);
 	}
 	self.updateClientToggle = function(){
 		self.SaveSuccess(false);self.SaveSuccessMsg('');
-		self.updateChangeToggle();self.clientName(undefined);self.featureClient(undefined);
+		self.updateChangeToggle();self.clientName('');self.clientName.isModified(false);
+		self.featureClient('');self.featureClient.isModified(false);
 	}
 	self.deleteClientToggle = function(){
 		self.SaveSuccess(false);self.SaveSuccessMsg('');
-		self.deleteChangeToggle();self.featureClient(undefined)
+		self.deleteChangeToggle();self.featureClient('');self.featureClient.isModified(false);
 	}
 	self.saveClient = function(){
 		data = {"name":self.clientName()};
@@ -202,7 +199,7 @@ var clientViewModel = function(){
 			self.SaveSuccess(true);self.SaveSuccessMsg('Data Saved successfully.');
 			setTimeout(function(){
 				$('#clientModal').modal('hide');self.updateClientList();
-			},300);
+			},100);
 		}).fail(function(response,status){
 			self.SaveSuccess(true);self.SaveSuccessMsg('Something Wrong happened. Try again!');
 		});
@@ -211,17 +208,16 @@ var clientViewModel = function(){
 	/* Refresh data in client modal */
 	self.refreshClient = function(){
 		self.SaveSuccess(false);self.SaveSuccessMsg('');
-		self.SaveSuccess(false);self.SaveSuccessMsg('');self.clientName(undefined);
+		self.clientName('');self.clientName.isModified(false);
 	};
 
 	self.deleteClient = function(val){
 		if(self.featureClient()){
 			var URL = clientURL+self.featureClient().id();
-			console.log(URL);
 			$.ajax({
 				url:URL,type:'DELETE',
 				success:function(result){
-					self.SaveSuccess(true);self.SaveSuccessMsg('CLient deleted successfully.');
+					self.SaveSuccess(true);self.SaveSuccessMsg('Client deleted successfully.');
 					setTimeout(function(){
 						$('#clientModal').modal('hide');self.updateClientList();self.updateFeatureList();
 					},300);
@@ -237,10 +233,12 @@ var clientViewModel = function(){
 					if(error_string.length>0){
 						self.SaveSuccessMsg(error_string);
 					}else{
-						self.SaveSuccessMsg('Oops! Something wrong happened.Try again later.')
+						self.SaveSuccessMsg('Oops! Something went wrong.Try again later.')
 					}
 				}
 			});
+		}else{
+			self.SaveSuccess(true);self.SaveSuccessMsg('Select Client first');
 		}
 	};
 
@@ -269,7 +267,7 @@ var clientViewModel = function(){
 					if(error_string.length>0){
 						self.SaveSuccessMsg(error_string);
 					}else{
-						self.SaveSuccessMsg('Oops! Something wrong happened.Try again later.')
+						self.SaveSuccessMsg('Oops! Something went wrong.Try again later.')
 					}
 				}
 			});
@@ -285,16 +283,42 @@ var clientViewModel = function(){
 
 	/************************ Functionality of Feature **************************/
 
+	self.featureTitle.subscribe(function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
+	})
+	self.featureDescription.subscribe(function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
+	})
+	self.featureClient.subscribe(function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
+	})
+	self.featureProductArea.subscribe(function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
+	})
+	self.featureTargetDate.subscribe(function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
+	})
+	self.clientPriority.subscribe(function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
+	})
+
+	self.refreshFeature = function(){
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
+		self.featureTitle('');self.featureTitle.isModified(false);
+		self.featureDescription('');self.featureDescription.isModified(false);
+		self.featureClient('');self.featureClient.isModified(false);
+		self.featureProductArea('');self.featureProductArea.isModified(false);
+		self.featureTargetDate('');self.featureTargetDate.isModified(false);
+		self.clientPriority('');self.clientPriority.isModified(false);
+	}
 
 	self.addFeatureToggle = function(){
-		self.SaveSuccess(false);self.SaveSuccessMsg('');
-		self.addChangeToggle();self.featureTitle(null);self.featureDescription(null);self.featureClient(null);
-		self.featureProductArea(null);self.featureTargetDate(null);self.clientPriority(null);
+		self.addChangeToggle();
+		self.refreshFeature();
 	}
 	self.updateFeatureToggle = function(){
 		self.SaveSuccess(false);self.SaveSuccessMsg('');
-		self.updateChangeToggle();self.featureTitle(null);self.featureDescription(null);self.featureClient(null);
-		self.featureProductArea(null);self.featureTargetDate(null);self.clientPriority(null);
+		self.updateChangeToggle();
 	}
 	self.deleteFeatureToggle = function(){
 		self.SaveSuccess(false);self.SaveSuccessMsg('');
@@ -302,67 +326,70 @@ var clientViewModel = function(){
 	}
 
 	self.saveFeature = function(){
-		var target_date = self.featureTargetDate();
-		target_date = target_date.split('/');target_date = target_date[2]+'-'+target_date[0]+'-'+target_date[1];
-		var data = {"title":self.featureTitle(),"description":self.featureDescription(),"client":self.featureClient().id(),"target_date":target_date,"product_area":self.featureProductArea().id(),"client_priority":self.clientPriority()};
-		console.log(data);
-		data = JSON.stringify(data);
-		var headers = {'Content-type':'application/json'};
-		console.log(data);
-		$.ajax({
-			url:featureURL,type:'post',headers:headers,data:data,
-			success: function(){
-				self.SaveSuccess(true);self.SaveSuccessMsg('Feature Saved successfully.')
-				setTimeout(function(){
-					$('#featureModal').modal('hide');self.updateFeatureList();
-				},300);
-			},
-			error: function(response){
-				var error_string = "";
-				for (var i=0;i<response.length;i++){
-					Object.keys(response[i]).forEach(function(key) {
-						error_string += response[i][key];
-					})
-				}
+		if(self.featureTargetDate() && self.featureTitle()&& self.featureDescription() && self.featureClient() && self.featureProductArea() && self.clientPriority()){
+			if(self.featureTargetDate.isValid() && self.featureTitle.isValid()&& self.featureDescription.isValid() && self.featureClient.isValid() && self.featureProductArea.isValid() && self.clientPriority.isValid()){
+				var target_date = self.featureTargetDate();
+				target_date = target_date.split('/');target_date = target_date[2]+'-'+target_date[0]+'-'+target_date[1];
+				var data = {"title":self.featureTitle(),"description":self.featureDescription(),"client":self.featureClient().id(),"target_date":target_date,"product_area":self.featureProductArea().id(),"client_priority":self.clientPriority()};
+				data = JSON.stringify(data);
+				var headers = {'Content-type':'application/json'};
+				$.ajax({
+					url:featureURL,type:'post',headers:headers,data:data,
+					success: function(){
+						self.SaveSuccess(true);self.SaveSuccessMsg('Feature Saved successfully.')
+						setTimeout(function(){
+							$('#featureModal').modal('hide');self.updateFeatureList();
+						},300);
+					},
+					error: function(response){
+						var error_string = "";response = response.responseJSON;
+						if(response.isArray){
+							for (var i=0;i<response.length;i++){
+								Object.keys(response[i]).forEach(function(key) {
+									error_string += response[i][key];
+								})
+							}
+						}
+						if(error_string.length===0){
+							error_string = response['error'];
+						}
+						self.SaveSuccess(true);
+						if(error_string.length>0){
+							self.SaveSuccessMsg(error_string);
+						}else{
+							self.SaveSuccessMsg('Oops! Something went wrong.Try again later.')
+						}
+					}
+				});
+			}else{
 				self.SaveSuccess(true);
-				if(error_string.length>0){
-					self.SaveSuccessMsg(error_string);
-				}else{
-					self.SaveSuccessMsg('Oops! Something wrong happened.Try again later.')
-				}
+				self.SaveSuccessMsg("Don't ignore warnings please");
 			}
-		});
-		/*$.post("http://localhost:8000/feature/feature/",headers,data,function(response,status){
-			self.featureSaveSuccess(true);self.featureSaveSuccessMsg('Data Saved successfully.')
-		}).fail(function(response,status){
-			self.featureSaveSuccess(true);self.featureSaveSuccessMsg('Something Wrong happened. Try again!');
-		});*/
+		}else{
+			self.SaveSuccess(true);
+			self.SaveSuccessMsg('Something is missing');
+		}
 	};
-
-	self.refreshFeature = function(){
-		self.SaveSuccess(false);self.SaveSuccessMsg('');
-		self.featureSaveSuccess(false);
-		self.featureSaveSuccessMsg('')
-		self.featureTitle(undefined),self.featureDescription(undefined),self.featureClient(undefined),self.featureTargetDate(undefined),self.featureProductArea(undefined);
-	}
 
 	self.updateFeature = function(val){
 		self.SaveSuccess(false);self.SaveSuccessMsg('');
 		$('#featureModal').modal('show');
 		self.featureId(val.id());
 		self.updateFeatureToggle();
-		self.featureTitle(val.title());self.featureClient(val.client());self.featureTargetDate(val.targetDate());
-		self.featureProductArea(val.productArea());self.featureDescription(val.description());self.clientPriority(val.clientPriority());
+		self.featureTitle(val.title());self.featureTitle.isModified(false);
+		self.featureClient(val.client());self.featureClient.isModified(false);
+		self.featureTargetDate(val.targetDate());self.featureTargetDate.isModified(false);
+		self.featureProductArea(val.productArea());self.featureProductArea.isModified(false);
+		self.featureDescription(val.description());self.featureDescription.isModified(false);
+		self.clientPriority(val.clientPriority());self.clientPriority.isModified(false);
 	};
 
 	self.updateFeatureItem = function(){
 		var target_date = self.featureTargetDate();
 		target_date = target_date.split('/');target_date = target_date[2]+'-'+target_date[0]+'-'+target_date[1];
 		var data = {"title":self.featureTitle(),"description":self.featureDescription(),"client":self.featureClient().id(),"target_date":target_date,"product_area":self.featureProductArea().id(),"client_priority":self.clientPriority()};
-		console.log(data);
 		data = JSON.stringify(data);
 		var headers = {'Content-type':'application/json'};
-		console.log(data);
 		var url = featureURL+self.featureId()+"/";
 		$.ajax({
 			url:url,type:'put',headers:headers,data:data,
@@ -373,9 +400,6 @@ var clientViewModel = function(){
 				},300);
 			},
 			error: function(jqXHR, textStatus, errorThrown){
-				console.log(jqXHR['responseJSON']);
-				console.log(textStatus);
-				console.log(errorThrown);
 				var error_string = "";
 				error_string = jqXHR['responseJSON']['error'];
 				self.SaveSuccess(true);
@@ -391,16 +415,20 @@ var clientViewModel = function(){
 
 	self.deleteFeature = function(val){
 		self.SaveSuccess(false);self.SaveSuccessMsg('');
-		console.log(val.id());
 		self.featureId(val.id());
 		$('#featureModal').modal('show');
 		self.deleteFeatureToggle();
-		self.featureTitle(val.title());self.featureClient(val.client());self.featureTargetDate(val.targetDate());
-		self.featureProductArea(val.productArea());self.featureDescription(val.description());self.clientPriority(val.clientPriority());
+		self.featureTitle(val.title());self.featureTitle.isModified(false);
+		self.featureClient(val.client());self.featureClient.isModified(false);
+		self.featureTargetDate(val.targetDate());self.featureTargetDate.isModified(false);
+		self.featureProductArea(val.productArea());self.featureProductArea.isModified(false);
+		self.featureDescription(val.description());self.featureDescription.isModified(false);
+		self.clientPriority(val.clientPriority());self.clientPriority.isModified(false);
+		document.getElementById("selectFeatureClient").disabled = true;
+		document.getElementById("selectFeatureProduct").disabled = true;
 	};
 
 	self.deleteFeatureItem = function(val){
-		console.log(self.featureId());
 		var url = featureURL+self.featureId()+"/";
 		$.ajax({
 			url:url,type:'DELETE',
@@ -417,7 +445,7 @@ var clientViewModel = function(){
 				if(error_string.length>0){
 					self.SaveSuccessMsg(error_string);
 				}else{
-					self.SaveSuccessMsg('Oops! Something wrong happened.Try again later.')
+					self.SaveSuccessMsg('Oops! Something went wrong.Try again later.')
 				}
 			}
 		});
@@ -437,18 +465,20 @@ var clientViewModel = function(){
 	})
 
 	self.addProductToggle = function(){
-		self.addChangeToggle();self.featureProductArea(undefined);self.productAreaName(undefined);
-		self.SaveSuccess(false);self.SaveSuccessMsg('');
+		self.addChangeToggle();self.SaveSuccess(false);self.SaveSuccessMsg('');
+		self.featureProductArea('');self.featureProductArea.isModified(false);
+		self.productAreaName('');self.productAreaName.isModified(false);
 	}
 	self.updateProductToggle = function(){
-		self.updateChangeToggle();self.featureProductArea(undefined);self.productAreaName(undefined);
-		self.SaveSuccess(false);self.SaveSuccessMsg('');
+		self.updateChangeToggle();self.SaveSuccess(false);self.SaveSuccessMsg('');
+		self.featureProductArea('');self.featureProductArea.isModified(false);
+		self.productAreaName('');self.productAreaName.isModified(false);
 	}
 	self.deleteProductToggle = function(){
-		self.deleteChangeToggle();self.featureProductArea(undefined);self.productAreaName(undefined);
-		self.SaveSuccess(false);self.SaveSuccessMsg('');
+		self.deleteChangeToggle();self.SaveSuccess(false);self.SaveSuccessMsg('');
 	}
 	self.saveProductArea = function(){
+		self.productAreaName.isValid();
 		var data = {"name":self.productAreaName()};
 		$.post(productURL,data,function(response,status){
 			self.SaveSuccess(true);self.SaveSuccessMsg('Product area Saved successfully.');
@@ -456,7 +486,6 @@ var clientViewModel = function(){
 				$('#productModal').modal('hide');self.updateProductList();
 			},300);
 		}).fail(function(response,status){
-			console.log(response+' '+status)
 			self.SaveSuccess(true);
 			self.SaveSuccessMsg('Something Wrong happened. Try again!');
 		});
@@ -464,13 +493,13 @@ var clientViewModel = function(){
 	};
 
 	self.refreshProductArea = function(){
-		self.SaveSuccess(false);self.SaveSuccessMsg('');self.productAreaName(undefined);
+		self.SaveSuccess(false);self.SaveSuccessMsg('');
+		self.productAreaName('');self.productAreaName.isModified(false);
 	};
 
 	self.deleteProductArea = function(val){
-		if(self.featureClient()){
+		if(self.featureProductArea()!==undefined){
 			var URL = productURL+self.featureProductArea().id();
-			console.log(URL);
 			$.ajax({
 				url:URL,type:'DELETE',
 				success:function(result){
@@ -490,11 +519,13 @@ var clientViewModel = function(){
 					}
 				} 
 			});
+		}else{
+			self.SaveSuccess(true);
+			self.SaveSuccessMsg('Choose client First');
 		}
 	};
 
 	self.updateProductArea = function(){
-		console.log(self.productAreaName());
 		if(self.productAreaName()&&self.featureProductArea()){
 			var data = {"name":self.productAreaName()};
 			data = JSON.stringify(data);
@@ -527,8 +558,7 @@ var clientViewModel = function(){
 			}
 		}
 	};
-	/*self.errors = ko.validation.group(self);
-	console.log(self.errors())*/
+	/*self.errors = ko.validation.group(self);*/
 
 
 
@@ -540,7 +570,6 @@ var clientViewModel = function(){
 	self.textSearch = ko.computed({
 		read:function(){
 			var q = self.Query().toLowerCase();
-			/*self.searchList(self.featureList().slice());*/
 			if(q.length>0){
 				var returnVal = self.featureList().filter(function(i) {
 					return i.title().toLowerCase().indexOf(q) >= 0||i.description().toLowerCase().indexOf(q) >= 0||i.client().name().toLowerCase().indexOf(q) >= 0||
@@ -552,7 +581,6 @@ var clientViewModel = function(){
 			}
 		},
 		write:function(value){
-			console.log('value');
 			self.searchList(value.slice());
 		},
 		owner:self
@@ -628,7 +656,7 @@ var clientViewModel = function(){
 	}
 };
 
-clientViewModel.errors = ko.validation.group(clientViewModel);
+clientViewModel.errors = ko.validation.group(clientViewModel,{deep:true});
 
 var vm = new clientViewModel();
 vm.updateClientList();
@@ -636,19 +664,3 @@ vm.updateProductList();
 vm.updateFeatureList();
 
 ko.applyBindingsWithValidation(vm);
-
-
-
-/*self.clientPriority.extend({
-		validation:{
-			validator:function(val){
-				var clientArray = ko.utils.arrayFilter(self.clientList(), function(client) {
-					return parseInt(client.priority())===parseInt(val);
-				});
-				if(clientArray.length>0){
-					return false;
-				}
-			},
-			message:"Sorry!! Priority already exist."
-		}
-	});*/

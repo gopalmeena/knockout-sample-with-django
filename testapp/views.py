@@ -22,7 +22,6 @@ class ClientViewSet(viewsets.ViewSet):
 		try:
 			return Client.objects.get(id=pk)
 		except Exception as e:
-			print e
 			raise Http404
 
 	def list(self,request):
@@ -110,19 +109,42 @@ class FeatureViewSet(viewsets.ViewSet):
 			if Feature.objects.filter(Q(title__iexact=request.data['title'],client__id=int(request.data['client']))):
 				return Response({'error':'Duplication of title for same client'},status=status.HTTP_400_BAD_REQUEST)
 			elif Feature.objects.filter(Q(client__id=int(request.data['client']),client_priority=request.data['client_priority'])):
-				return Response({'error':'Duplication of client priority for same client'},status=status.HTTP_400_BAD_REQUEST)
+				features_list = Feature.objects.filter(Q(client__id=int(request.data['client']),client_priority__gte=request.data['client_priority'])).order_by('client_priority')
+				if features_list:
+					priority_value = int(request.data['client_priority'])
+					for features in features_list:
+						if features.client_priority == priority_value:
+							features.client_priority = priority_value+1
+							features.save()
+							priority_value = priority_value+1
+						else:
+							break
+				serializer.save()
+				return Response(serializer.data,status=status.HTTP_201_CREATED)
 			else:
 				serializer.save()
 				return Response(serializer.data,status=status.HTTP_201_CREATED)
 		return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 	def update(self,request,pk,format=None):
-		print pk
 		feature = self.get_objects(pk)
 		serializer = FeatureSerializer(feature,data=request.data)
 		if serializer.is_valid():
 			if Feature.objects.filter(title__iexact=request.data['title'],target_date=request.data['target_date'],description__iexact=request.data['description'],client__id=int(request.data['client'])):
 				return Response({'error':'This feature already registered with same title and with same target date for same client'},status=status.HTTP_400_BAD_REQUEST)
+			elif Feature.objects.filter(Q(client__id=int(request.data['client']),client_priority=request.data['client_priority'])):
+				features_list = Feature.objects.filter(Q(client__id=int(request.data['client']),client_priority__gte=request.data['client_priority'])).order_by('client_priority')
+				if features_list:
+					priority_value = int(request.data['client_priority'])
+					for features in features_list:
+						if features.client_priority == priority_value:
+							features.client_priority = priority_value+1
+							features.save()
+							priority_value = priority_value+1
+						else:
+							break
+				serializer.save()
+				return Response(serializer.data,status=status.HTTP_201_CREATED)
 			else:
 				serializer.save()
 			return Response(serializer.data)

@@ -40,6 +40,18 @@
 			text-align:center;
 			color:#fff;
 		}
+		#paddingElement{
+			padding-top: 10px;
+		}
+		#thOne{
+			width: 10%;
+		}
+		#thTwo{
+			width: 36%;
+		}
+		#thThree{
+			width: 14%;
+		}
 		table{
 			border-collapse:collapse;
 			table-layout:fixed;
@@ -77,12 +89,12 @@
 		</nav>
 	</div>
 	<div class="container">
-		<div class="row" data-bind="visible:showFeature" style="padding-top:10px;">
+		<div class="row" data-bind="visible:showFeature" id="paddingElement">
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#featureModal" data-bind="click:addFeatureToggle">
 				<i class="fa fa-plus"></i>Add Feature
 			</button>
 		</div>
-		<div class="row" data-bind="visible:showClient" style="padding-top:10px;">
+		<div class="row" data-bind="visible:showClient" id="paddingElement">
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#clientModal" data-bind="click:addClientToggle">
 				<i class="fa fa-plus"></i>Add client
 			</button>&nbsp;&nbsp;
@@ -90,7 +102,7 @@
 
 			&nbsp;&nbsp;<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#clientModal" data-bind="click:deleteClientToggle"><i class="fa fa-trash-o"></i>Delete Client</button>
 		</div>
-		<div class="row" data-bind="visible:showProduct" style="padding-top:10px;">
+		<div class="row" data-bind="visible:showProduct" id="paddingElement">
 			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#productModal" data-bind="click:addProductToggle">
 				<i class="fa fa-plus"></i>Add Product Area
 			</button>&nbsp;&nbsp;
@@ -99,24 +111,24 @@
 			&nbsp;&nbsp;<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#productModal" data-bind="click:deleteProductToggle"><i class="fa fa-trash-o"></i>Delete Product Area</button>
 		</div>
 	</div>
-	<div class="container" style="padding-top:10px;">
+	<div class="container" id="paddingElement">
 		<div class="row">
 			<div class="col-sm-8">
 				<!-- <select data-bind="options:pageSizeList,value:pageSize,optionsCaption:'No of rows...'"></select> -->
 			</div>
-			<div class="col-sm-4">Showing 1 to <span data-bind="text:searchList().length"></span> of <span data-bind="text:searchList().length"></span> features</div>
+			<div class="col-sm-4" data-bind="visible:searchList().length>0">Showing 1 to <span data-bind="text:searchList().length"></span> of <span data-bind="text:searchList().length"></span> features</div>
 		</div>
-		<div class="row" style="padding-top: 10px;">
+		<div class="row" id="paddingElement">
 			<table class="table table-bordered table-hover">
 				<thead class="thead-dark">
 					<tr>
-						<th style="width:10%" data-bind="click:titleAsc">Title<span><i class="fa fa-sort-amount-asc" data-bind="visible:titleSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:titleSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:titleSort()===0"></i></span></th>
-						<th style="width:36%" data-bind="click:descAsc">Description<span><i class="fa fa-sort-amount-asc" data-bind="visible:descSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:descSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:descSort()===0"></i></span></th>
-						<th style="width:10%" data-bind="click:cliAsc">Client<span><i class="fa fa-sort-amount-asc" data-bind="visible:clientSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:clientSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:clientSort()===0"></i></span></th>
-						<th style="width:10%" data-bind="click:cpAsc">Priority<span><i class="fa fa-sort-amount-asc" data-bind="visible:cliPriSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:cliPriSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:cliPriSort()===0"></i></span></th>
-						<th style="width:10%" data-bind="click:paAsc">Product<span><i class="fa fa-sort-amount-asc" data-bind="visible:proAreaSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:proAreaSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:proAreaSort()===0"></i></span></th>
-						<th style="width:14%" data-bind="click:tdAsc">Target Date<span><i class="fa fa-sort-amount-asc" data-bind="visible:targetDateSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:targetDateSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:targetDateSort()===0"></i></span></th>
-						<th style="width:10%">Actions</th>
+						<th id="thOne" data-bind="click:titleAsc">Title<span><i class="fa fa-sort-amount-asc" data-bind="visible:titleSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:titleSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:titleSort()===0"></i></span></th>
+						<th id="thTwo" data-bind="click:descAsc">Description<span><i class="fa fa-sort-amount-asc" data-bind="visible:descSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:descSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:descSort()===0"></i></span></th>
+						<th id="thOne" data-bind="click:cliAsc">Client<span><i class="fa fa-sort-amount-asc" data-bind="visible:clientSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:clientSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:clientSort()===0"></i></span></th>
+						<th id="thOne" data-bind="click:cpAsc">Priority<span><i class="fa fa-sort-amount-asc" data-bind="visible:cliPriSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:cliPriSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:cliPriSort()===0"></i></span></th>
+						<th id="thOne" data-bind="click:paAsc">Product<span><i class="fa fa-sort-amount-asc" data-bind="visible:proAreaSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:proAreaSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:proAreaSort()===0"></i></span></th>
+						<th id="thThree" data-bind="click:tdAsc">Target Date<span><i class="fa fa-sort-amount-asc" data-bind="visible:targetDateSort()===1"></i><i class="fa fa-sort-amount-desc" data-bind="visible:targetDateSort()===2"></i><i class="fa fa-exchange fa-rotate-90" data-bind="visible:targetDateSort()===0"></i></span></th>
+						<th id="thOne">Actions</th>
 					</tr>
 				</thead>
 				<tbody data-bind="foreach:searchList">
@@ -181,7 +193,7 @@
 								<div class="input-group-prepend">
 									<span class="input-group-text">Client: </span>
 								</div>
-								<select data-bind="options:clientList,optionsText:'name',value:featureClient,optionsCaption:'Choose Client...',disbale:true" class="form-control"></select>
+								<select data-bind="options:clientList,optionsText:'name',value:featureClient,optionsCaption:'Choose Client...',disbale:true" class="form-control" id="selectFeatureClient"></select>
 							</div>
 							<br/>
 							<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
@@ -190,7 +202,7 @@
 								</div>
 								<input type="number" class="form-control" id="clientPriority" data-bind="value:clientPriority" placeholder="Enter Client Priority" min="1"/>
 							</div>
-							<div data-bind="visible:!featureClient.isValid() & featureClient.isModified()">
+							<div data-bind="visible:!clientPriority.isValid() & featureClient.isModified()">
 								<p data-bind="validationMessage:featureClient" class="text-danger"></p>
 							</div>
 							<div class="input-group" data-bind="visible:deleteButton(),validationOptions: { insertMessages: false}">
@@ -233,7 +245,7 @@
 								<div class="input-group-prepend">
 									<span class="input-group-text">Product Area: </span>
 								</div>
-								<select data-bind="options:productAreaList,optionsText:'name',value:featureProductArea,optionsCaption:'Choose Product...',disbale:true" class="form-control"></select>
+								<select data-bind="options:productAreaList,optionsText:'name',value:featureProductArea,optionsCaption:'Choose Product...',disbale:true" class="form-control" id="selectFeatureProduct"></select>
 							</div>
 							<br/>
 							<div class="input-group" data-bind="visible:saveButton()||updateButton(),validationOptions: { insertMessages: false}">
