@@ -130,9 +130,7 @@ class FeatureViewSet(viewsets.ViewSet):
 		feature = self.get_objects(pk)
 		serializer = FeatureSerializer(feature,data=request.data)
 		if serializer.is_valid():
-			if Feature.objects.filter(title__iexact=request.data['title'],target_date=request.data['target_date'],description__iexact=request.data['description'],client__id=int(request.data['client'])):
-				return Response({'error':'This feature already registered with same title and with same target date for same client'},status=status.HTTP_400_BAD_REQUEST)
-			elif Feature.objects.filter(Q(client__id=int(request.data['client']),client_priority=request.data['client_priority'])):
+			if Feature.objects.filter(Q(client__id=int(request.data['client']),client_priority=request.data['client_priority'])):
 				features_list = Feature.objects.filter(Q(client__id=int(request.data['client']),client_priority__gte=request.data['client_priority'])).order_by('client_priority')
 				if features_list:
 					priority_value = int(request.data['client_priority'])

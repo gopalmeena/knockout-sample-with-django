@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from .models import *
+from testapp.models import *
 from django.test import TestCase
 from datetime import datetime
 
 # Create your tests here.
 
 class ClientTestCase(object):
+	fixtures = ['testapp_models_testdata.json']
 	def setUp(self):
 		Client.objects.create(name='TestClient')
 
@@ -25,6 +26,7 @@ class ProductTestCase(object):
 
 
 class FeatureTestCase(object):
+	fixtures = ['testapp_models_testdata.json']
 	def setUp(self):
 		Feature.objects.create(title='Test Title',description='Test Description',client=1,client_priority=1,target_date=datetime.now().strfime('%Y-%m-%d'),product_area=1)
 

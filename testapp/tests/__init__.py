@@ -1,0 +1,1 @@
+from testapp.tests.models import *

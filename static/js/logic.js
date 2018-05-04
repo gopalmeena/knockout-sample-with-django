@@ -10,17 +10,20 @@ ko.validation.init({
 	errorElementClass:'error'
 });
 
+/* Client object declaration */
 var Client = function(id,name){
 	var self = this;
 	self.name = ko.observable(name),self.id = ko.observable(id);
 }
 
+/* Feature object declaration */
 var Feature = function(id,title,description,client,client_priority,target_date,product_area){
 	var self = this;
 	this.title = ko.observable(title),this.description = ko.observable(description),this.client = ko.observable(client);
 	this.clientPriority = ko.observable(client_priority),this.targetDate = ko.observable(target_date),this.productArea = ko.observable(product_area),this.id = ko.observable(id);
 }
 
+/* Product object declaration */
 var Product = function(id,name){
 	var self = this;
 	self.name = ko.observable(name),self.id = ko.observable(id);
@@ -171,7 +174,6 @@ var clientViewModel = function(){
 	};
 
 	/**************     functionalities of client     ******************/
-
 
 	self.clientName.subscribe(function(){
 		self.SaveSuccess(false);self.SaveSuccessMsg('');
@@ -363,11 +365,35 @@ var clientViewModel = function(){
 				});
 			}else{
 				self.SaveSuccess(true);
-				self.SaveSuccessMsg("Don't ignore warnings please");
+				if(self.featureTitle.isValid()===false){
+					self.SaveSuccessMsg('Title is invalid.')
+				}else if(self.featureClient.isValid()===false){
+					self.SaveSuccessMsg('Client is invalid.')
+				}else if(self.clientPriority.isValid()===false){
+					self.SaveSuccessMsg('Client Priority is invalid.')
+				}else if(self.featureTargetDate.isValid()===false){
+					self.SaveSuccessMsg('Target Date is invalid.')
+				}else if(self.featureProductArea.isValid()===false){
+					self.SaveSuccessMsg('Product Area is invalid.')
+				}else if(self.featureDescription.isValid()===false){
+					self.SaveSuccessMsg('Description is invalid.')
+				};
 			}
 		}else{
 			self.SaveSuccess(true);
-			self.SaveSuccessMsg('Something is missing');
+			if(self.featureTitle()===''){
+				self.SaveSuccessMsg('Title is missing.')
+			}else if(self.featureClient()===undefined){
+				self.SaveSuccessMsg('Client is missing.')
+			}else if(self.clientPriority()===''){
+				self.SaveSuccessMsg('Client Priority is missing.')
+			}else if(self.featureTargetDate()===''){
+				self.SaveSuccessMsg('Target Date is missing.')
+			}else if(self.featureProductArea()===undefined){
+				self.SaveSuccessMsg('Product Area is missing.')
+			}else if(self.featureDescription()===''){
+				self.SaveSuccessMsg('Description is missing.')
+			};
 		}
 	};
 

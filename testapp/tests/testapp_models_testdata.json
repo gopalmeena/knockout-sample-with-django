@@ -1,0 +1,35 @@
+[
+	{
+		"pk":1,
+		"models":"testapp.client",
+		"fields":{
+			"name":"TestClient"
+		}
+	},
+	{
+		"pk":1,
+		"models":"testapp.product",
+		"fields":{
+			"name":"TestClient"
+		}
+	},
+	{
+		"pk":1,
+		"models":"testapp.client",
+		"fields":{
+			"name":"TestClient"
+		}
+	},
+	{
+		"pk":1,
+		"models":"testapp.client",
+		"fields":{
+			"title":"Test Title",
+			"description":"Test Description",
+			"client_id":"1",
+			"client_priority":"1",
+			"target_date":"",
+			"product_area":"1",
+		}
+	}
+]
